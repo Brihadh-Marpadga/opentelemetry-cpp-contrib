@@ -1,4 +1,4 @@
-name: webserver instrumentation CI
+name: fnma_nginx
 
 on:
   push:
@@ -24,13 +24,13 @@ jobs:
         uses: docker/setup-buildx-action@master
         with:
           install: true
-      - name: cache docker layers
-        uses: actions/cache@v3
-        with:
-          path: /tmp/buildx-cache/
-          key: apache-centos7-${{ github.sha }}
-          restore-keys: |
-           apache-centos7
+      # - name: cache docker layers
+      #   uses: actions/cache@v3
+      #   with:
+      #     path: /tmp/buildx-cache/
+      #     key: apache-centos7-${{ github.sha }}
+      #     restore-keys: |
+      #       apache-centos7
       - name: setup docker image
         run: |
           cd instrumentation/otel-webserver-module
@@ -38,8 +38,6 @@ jobs:
             --load .
       - name: build
         run: |
-          cat /etc/os-release
-          java -version
           docker run -idt --name apache_centos7_container apache_centos7 /bin/bash
           cd instrumentation/otel-webserver-module
           docker exec apache_centos7_container bash -c \
@@ -54,10 +52,10 @@ jobs:
         run: |
           docker exec apache_centos7_container bash -c \
             'cd /otel-webserver-module; ./gradlew runUnitTest'
-      - name: update cache
-        run: |
-          rm -rf /tmp/buildx-cache/apache_centos7
-          mv /tmp/buildx-cache/apache_centos7-new /tmp/buildx-cache/apache_centos7
+      # - name: update cache
+      #   run: |
+      #     rm -rf /tmp/buildx-cache/apache_centos7
+      #     mv /tmp/buildx-cache/apache_centos7-new /tmp/buildx-cache/apache_centos7
       - name: copy artifacts
         id: artifacts
         run: |
@@ -70,15 +68,13 @@ jobs:
         with:
           name: opentelemetry-webserver-sdk-x64-linux.tgz
           path: /tmp/apache_centos7/opentelemetry-webserver-sdk-x64-linux.tgz
-      # - name: run integrationtest
-      #   run: |
-      #     docker ps
-      #     docker rm -f apache_centos7_container
-      #     cd instrumentation/otel-webserver-module
-      #     docker-compose --profile centos7 up -d
-      #     docker ps -a
-      #     sleep 30
-      #     ./gradlew :test:integration:integrationTests -i
-      #     curl http://localhost:9411/api/v2/spans?serviceName=demoservice
+      - name: run integrationtest
+        run: |
+          docker rm -f apache_centos7_container
+          cd instrumentation/otel-webserver-module
+          docker-compose --profile centos7 up -d
+          docker ps -a
+          sleep 30
+          ./gradlew :test:integration:integrationTests -i
 
- 
+  
