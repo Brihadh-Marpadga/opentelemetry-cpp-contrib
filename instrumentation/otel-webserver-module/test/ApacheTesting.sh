@@ -7,7 +7,7 @@
 targetSystem=$1
 
 OTelApacheModule="/opt/opentelemetry-webserver-sdk/WebServerModule/Apache/libmod_apache_otel22.so"
-if [ $targetSystem = "ubuntu" ] || [ $targetSystem = "centos7" ]; then
+if [ $targetSystem = "ubuntu" ] || [ $targetSystem = "centos8" ]; then
 	OTelApacheModule="/opt/opentelemetry-webserver-sdk/WebServerModule/Apache/libmod_apache_otel.so"
 fi
 
@@ -65,7 +65,7 @@ ApacheModuleSegmentParameter 2
 targetConfFile='/etc/httpd/conf.d/opentelemetry_module.conf'
 if [ $targetSystem = "ubuntu" ]; then
 	targetConfFile='/etc/apache2/opentelemetry_module.conf'
-elif [ $targetSystem = "centos7" ]; then
+elif [ $targetSystem = "centos8" ]; then
 	targetConfFile='/etc/httpd/conf/opentelemetry_module.conf'
 fi
 
@@ -77,7 +77,7 @@ if [ $targetSystem = "ubuntu" ]; then
 		echo 'Include opentelemetry_module.conf' >> /etc/apache2/apache2.conf
 	fi
 
-elif [ $targetSystem = "centos7" ]; then
+elif [ $targetSystem = "centos8" ]; then
 	if ! grep -Fxq "Include opentelemetry_module.conf" /etc/httpd/conf/httpd.conf; then
 		echo 'Include opentelemetry_module.conf' >> /etc/httpd/conf/httpd.conf
 	fi
