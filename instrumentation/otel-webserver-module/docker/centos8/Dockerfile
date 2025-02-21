@@ -275,7 +275,7 @@ RUN cp -r /dependencies /otel-webserver-module/ \
 # Add the Nginx repository
 RUN echo "[nginx]" > /etc/yum.repos.d/nginx.repo && \
     echo "name=nginx repo" >> /etc/yum.repos.d/nginx.repo && \
-    echo "baseurl=https://nginx.org/packages/mainline/centos/8/x86_64/RPMS/" >> /etc/yum.repos.d/nginx.repo && \
+    echo "baseurl=https://nginx.org/packages/mainline/centos/8/x86_64/" >> /etc/yum.repos.d/nginx.repo && \
     echo "gpgcheck=1" >> /etc/yum.repos.d/nginx.repo && \
     echo "enabled=1" >> /etc/yum.repos.d/nginx.repo && \
     rpm --import https://nginx.org/keys/nginx_signing.key
