@@ -280,10 +280,11 @@ RUN echo "[nginx]" > /etc/yum.repos.d/nginx.repo && \
     echo "enabled=1" >> /etc/yum.repos.d/nginx.repo && \
     rpm --import https://nginx.org/keys/nginx_signing.key
 
-# Download and install Nginx 1.27.3 manually
-RUN dnf clean all && \
-    dnf install -y wget && \
-    wget https://nginx.org/packages/mainline/centos/8/x86_64/nginx-1.27.3-1.el8.ngx.x86_64.rpm && \
+# Install necessary tools
+RUN dnf install -y wget && dnf clean all
+
+# Download and install Nginx 1.27.3 from the correct path
+RUN wget https://nginx.org/packages/mainline/centos/8/x86_64/RPMS/nginx-1.27.3-1.el8.ngx.x86_64.rpm && \
     dnf install -y ./nginx-1.27.3-1.el8.ngx.x86_64.rpm && \
     rm -f nginx-1.27.3-1.el8.ngx.x86_64.rpm && \
     dnf clean all
