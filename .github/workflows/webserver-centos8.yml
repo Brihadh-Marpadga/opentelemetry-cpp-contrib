@@ -1,6 +1,4 @@
 name: webserver-centos8-build
-
-
 on:
   push:
     branches: [ main ]
