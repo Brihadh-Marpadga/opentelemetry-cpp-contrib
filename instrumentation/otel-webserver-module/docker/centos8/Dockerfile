@@ -41,20 +41,21 @@ RUN sed -i 's/mirrorlist/#mirrorlist/g' /etc/yum.repos.d/CentOS-* && \
 # install required packages
 RUN yum update -y \
     && yum install -y \
-    yum install wget -y \
-    yum install -y zlib-devel \
-    yum install -y openssl-devel \
-    yum install java-1.8.0-openjdk -y \
-    yum install java-1.8.0-openjdk-devel \
-    yum install pcre-devel -y \
-    yum install xz -y \
-    yum install httpd -y \
+    yum  wget -y \
+    yum  -y zlib-devel \
+    yum  -y openssl-devel \
+    yum  java-1.8.0-openjdk -y \
+    yum  java-1.8.0-openjdk-devel \
+    yum  pcre-devel -y \
+    yum  xz -y \
+    yum  httpd -y \
     && yum clean all
 
 # install lcov package
-RUN dnf install -y epel-release && \
-    dnf install -y lcov && \
-    dnf clean all
+RUN yum install -y epel-release && \
+    yum install -y lcov && \
+    yum clean all
+
 
 # install devtoolset toolchain
 RUN yum -y install centos-release-scl \
