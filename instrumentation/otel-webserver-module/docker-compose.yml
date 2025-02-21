@@ -3,16 +3,16 @@ networks:
     default:
         name: webserver-network
 services:
-    webserver_centos7:
+    webserver_centos8:
         build:
             context: .
-            dockerfile: docker/centos7/Dockerfile
-        image: apache_centos7
+            dockerfile: docker/centos8/Dockerfile
+        image: apache_centos8
         hostname: webserver
-        container_name: webserver_centos7
+        container_name: webserver_centos8
         command: bash -c " httpd -k start && tail -f /dev/null "
         profiles:
-            - centos7
+            - centos8
         ports:
             - "9004:80"
         depends_on:
@@ -60,16 +60,16 @@ services:
             - "8008:80"
         depends_on:
             - otel-collector
-    nginx_centos7:
+    nginx_centos8:
         build:
             context: .
-            dockerfile: docker/centos7/Dockerfile
-        image: nginx_centos7
+            dockerfile: docker/centos8/Dockerfile
+        image: nginx_centos8
         hostname: webserver
-        container_name: nginx_centos7
+        container_name: nginx_centos8
         command: bash -c "export LD_LIBRARY_PATH=/opt/opentelemetry-webserver-sdk/sdk_lib/lib && nginx && tail -f /dev/null"
         profiles:
-            - centos7_nginx
+            - centos8_nginx
         ports:
             - "8012:80"
         depends_on:
@@ -111,9 +111,9 @@ services:
         profiles:
             - default
             - ubuntu20.04
-            - centos7
+            - centos8
             - centos_nginx
-            - centos7_nginx
+            - centos8_nginx
             - ubuntu20.04_nginx
         command: ["--config=/etc/otel-config.yml"]
         volumes:
@@ -132,9 +132,9 @@ services:
         profiles:
             - default
             - ubuntu20.04
-            - centos7
+            - centos8
             - centos_nginx
-            - centos7_nginx
+            - centos8_nginx
             - ubuntu20.04_nginx
         ports:
             - "9411:9411"
