@@ -64,7 +64,7 @@ jobs:
           docker cp apache_centos8_container:/otel-webserver-module/build/opentelemetry-webserver-sdk-x64-linux.tgz \
             /tmp/apache_centos8/
       - name: upload artifacts
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: opentelemetry-webserver-sdk-x64-linux.tgz
           path: /tmp/apache_centos8/opentelemetry-webserver-sdk-x64-linux.tgz
