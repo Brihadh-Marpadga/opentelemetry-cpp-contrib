@@ -58,14 +58,10 @@ RUN yum install -y epel-release && \
 
 
 # install devtoolset toolchain
-RUN yum -y install centos-release-scl \
-    && sed -i 's/mirrorlist/#mirrorlist/g' /etc/yum.repos.d/CentOS-* && \
-    sed -i 's|# *baseurl=http://mirror.centos.org|baseurl=http://vault.centos.org|g' /etc/yum.repos.d/CentOS-* \
-    && yum install yum-utils -y \
-    && yum-config-manager --enable rhel-server-rhscl-7-rpms -y \
-    && yum install devtoolset-7 -y \
-    && yum clean all
-ENV PATH="/opt/rh/devtoolset-7/root/usr/bin:${PATH}"
+RUN dnf install -y gcc-toolset-9 && \
+    dnf clean all
+
+ENV PATH="/opt/rh/gcc-toolset-9/root/usr/bin:${PATH}"
 
 # install python 2.7.8
 RUN wget http://www.python.org/ftp/python/${PYTHON_VERSION}/Python-${PYTHON_VERSION}.tar.xz \
