@@ -1,15 +1,6 @@
 name: webserver-centos8-build
 on:
-  push:
-    branches: [ main ]
-    paths:
-      - 'instrumentation/otel-webserver-module/**'
-      - '.github/workflows/fnma_build.yml'
-  pull_request:
-    branches: [ main, webserver-dev ]
-    paths:
-      - 'instrumentation/otel-webserver-module/**'
-      - '.github/workflows/fnma_build.yml'
+  workflow_dispatch
 
 jobs:
   webserver-build-test-centos8:
