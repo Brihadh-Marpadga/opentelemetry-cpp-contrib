@@ -41,14 +41,14 @@ RUN sed -i 's/mirrorlist/#mirrorlist/g' /etc/yum.repos.d/CentOS-* && \
 # install required packages
 RUN yum update -y \
     && yum install -y \
-    yum install wget -y \
-    yum install -y zlib-devel \
-    yum install -y openssl-devel \
-    yum install java-1.8.0-openjdk -y \
-    yum install java-1.8.0-openjdk-devel \
-    yum install pcre-devel -y \
-    yum install xz -y \
-    yum install httpd -y \
+    yum  wget -y \
+    yum  -y zlib-devel \
+    yum  -y openssl-devel \
+    yum  java-1.8.0-openjdk -y \
+    yum  java-1.8.0-openjdk-devel \
+    yum  pcre-devel -y \
+    yum  xz -y \
+    yum  httpd -y \
     && yum clean all
 
 # install lcov package
