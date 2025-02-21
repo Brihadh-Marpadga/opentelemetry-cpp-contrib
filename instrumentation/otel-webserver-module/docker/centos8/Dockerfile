@@ -272,12 +272,22 @@ RUN cp -r /dependencies /otel-webserver-module/ \
     && cd otel-webserver-module \
     && ./gradlew assembleWebServerModule 
 
-RUN echo '[nginx]' >> /etc/yum.repos.d/nginx.repo \
-    && echo 'name=nginx repo' >> /etc/yum.repos.d/nginx.repo \
-    && echo 'baseurl=https://nginx.org/packages/mainline/centos/8/x86_64/' >> /etc/yum.repos.d/nginx.repo \
-    && echo 'gpgcheck=0' >> /etc/yum.repos.d/nginx.repo \ 
-    && echo 'enabled=1' >> /etc/yum.repos.d/nginx.repo \
-    && yum install nginx-${NGINX_VERSION} -y
+# Add the Nginx repository
+RUN echo "[nginx]" > /etc/yum.repos.d/nginx.repo && \
+    echo "name=nginx repo" >> /etc/yum.repos.d/nginx.repo && \
+    echo "baseurl=https://nginx.org/packages/mainline/centos/8/x86_64/RPMS/" >> /etc/yum.repos.d/nginx.repo && \
+    echo "gpgcheck=1" >> /etc/yum.repos.d/nginx.repo && \
+    echo "enabled=1" >> /etc/yum.repos.d/nginx.repo && \
+    rpm --import https://nginx.org/keys/nginx_signing.key
+
+# Download and install Nginx 1.27.3 manually
+RUN dnf clean all && \
+    dnf install -y wget && \
+    wget https://nginx.org/packages/mainline/centos/8/x86_64/nginx-1.27.3-1.el8.ngx.x86_64.rpm && \
+    dnf install -y ./nginx-1.27.3-1.el8.ngx.x86_64.rpm && \
+    rm -f nginx-1.27.3-1.el8.ngx.x86_64.rpm && \
+    dnf clean all
+
 
 RUN cd /otel-webserver-module/build \
     && tar -xf opentelemetry-webserver-sdk-x64-linux.tgz \
