@@ -1,4 +1,4 @@
-name: centos8_1.27.3
+name: webserver-centos8
 
 
 on:
@@ -13,14 +13,13 @@ on:
       - 'instrumentation/otel-webserver-module/**'
       - '.github/workflows/webserver.yml'
 
-      
 jobs:
   webserver-build-test-centos8:
     name: webserver-centos8-build
     runs-on: ubuntu-20.04
     steps:
       - name: checkout otel webserver
-        uses: actions/checkout@v4
+        uses: actions/checkout@v3
       - name: setup buildx
         id: buildx
         uses: docker/setup-buildx-action@master
@@ -66,7 +65,10 @@ jobs:
           docker cp apache_centos8_container:/otel-webserver-module/build/opentelemetry-webserver-sdk-x64-linux.tgz \
             /tmp/apache_centos8/
       - name: upload artifacts
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v3
         with:
           name: opentelemetry-webserver-sdk-x64-linux.tgz
           path: /tmp/apache_centos8/opentelemetry-webserver-sdk-x64-linux.tgz
+      
+
+  
