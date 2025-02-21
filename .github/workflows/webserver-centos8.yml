@@ -1,4 +1,4 @@
-name: webserver-centos8
+name: webserver-centos8-build
 
 
 on:
@@ -6,12 +6,12 @@ on:
     branches: [ main ]
     paths:
       - 'instrumentation/otel-webserver-module/**'
-      - '.github/workflows/webserver.yml'
+      - '.github/workflows/fnma_build.yml'
   pull_request:
     branches: [ main, webserver-dev ]
     paths:
       - 'instrumentation/otel-webserver-module/**'
-      - '.github/workflows/webserver.yml'
+      - '.github/workflows/fnma_build.yml'
 
 jobs:
   webserver-build-test-centos8:
@@ -19,7 +19,7 @@ jobs:
     runs-on: ubuntu-20.04
     steps:
       - name: checkout otel webserver
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
       - name: setup buildx
         id: buildx
         uses: docker/setup-buildx-action@master
@@ -32,7 +32,6 @@ jobs:
       #     key: apache-centos8-${{ github.sha }}
       #     restore-keys: |
       #       apache-centos8
-      
       - name: setup docker image
         run: |
           cd instrumentation/otel-webserver-module
@@ -66,7 +65,10 @@ jobs:
           docker cp apache_centos8_container:/otel-webserver-module/build/opentelemetry-webserver-sdk-x64-linux.tgz \
             /tmp/apache_centos8/
       - name: upload artifacts
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: opentelemetry-webserver-sdk-x64-linux.tgz
           path: /tmp/apache_centos8/opentelemetry-webserver-sdk-x64-linux.tgz
+      
+
+  
