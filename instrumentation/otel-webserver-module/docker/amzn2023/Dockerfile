@@ -70,6 +70,21 @@ RUN wget https://cmake.org/files/v${CMAKE_VERSION}/cmake-${CMAKE_0VERSION}-linux
   && cd .. && rm -rf cmake-${CMAKE_0VERSION}-linux-x86_64.tar.gz
 
 # install grpc. If planning to upgrade, make sure sed command works
+
+RUN dnf install -y \
+        git \
+        gcc \
+        gcc-c++ \
+        make \
+        cmake \
+        automake \
+        autoconf \
+        libtool \
+        openssl-devel \
+        zlib-devel \
+        unzip \
+    && dnf clean all
+    
 RUN git clone https://github.com/grpc/grpc \
   && cd grpc \
   && git checkout tags/v${GRPC_VERSION} -b v${GRPC_VERSION} \
