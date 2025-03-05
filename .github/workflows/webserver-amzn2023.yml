@@ -1,0 +1,47 @@
+name: webserver amzn2023
+
+on:
+  workflow_dispatch:
+
+jobs:
+  webserver-build-test-amzn2023:
+    name: webserver-amzn2023-build
+    runs-on: ubuntu-20.04
+    steps:
+      - name: checkout otel webserver
+        uses: actions/checkout@v4
+      - name: setup buildx
+        id: buildx
+        uses: docker/setup-buildx-action@master
+        with:
+          install: true
+      - name: setup docker image
+        run: |
+          cd instrumentation/otel-webserver-module
+          docker buildx build -t amazonlinux_2023 -f docker/amzn2023/Dockerfile \
+            --load .
+      - name: build
+        run: |
+          docker run -idt --name amazonlinux_2023_container amazonlinux_2023 /bin/bash
+          cd instrumentation/otel-webserver-module
+          docker exec amazonlinux_2023_container bash -c \
+            'cd /otel-webserver-module; rm -rf *;'
+          docker cp . $(docker inspect --format="{{.Id}}" amazonlinux_2023_container):/otel-webserver-module/
+          docker exec amazonlinux_2023_container bash -c \
+            'cd /otel-webserver-module; rm -rf build; \
+            cp -r /dependencies /otel-webserver-module/;           \
+            cp -r /build-dependencies /otel-webserver-module/;     \
+            ./gradlew assembleWebServerModule'
+
+      - name: copy artifacts
+        id: artifacts
+        run: |
+          cd instrumentation/otel-webserver-module
+          mkdir -p /tmp/amazonlinux_2023/
+          docker cp amazonlinux_2023_container:/otel-webserver-module/build/opentelemetry-webserver-sdk-x64-linux.tgz \
+            /tmp/amazonlinux_2023/
+      - name: upload artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: opentelemetry-webserver-sdk-x64-linux.tgz
+          path: /tmp/amazonlinux_2023/opentelemetry-webserver-sdk-x64-linux.tgz
