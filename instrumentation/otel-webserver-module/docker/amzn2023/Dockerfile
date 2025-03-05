@@ -29,7 +29,7 @@ ARG PCRE_VERSION="8.44"
 ARG NGINX_VERSION="1.27.3"
 
 # create default non-root user
-RUN groupadd -r swuser && useradd -u 1000 -g swuser -m -s /sbin/nologin -c "default non-root user" swuser
+#RUN groupadd -r swuser && useradd -u 1000 -g swuser -m -s /sbin/nologin -c "default non-root user" swuser
 
 RUN chmod -R 777 /opt
 
