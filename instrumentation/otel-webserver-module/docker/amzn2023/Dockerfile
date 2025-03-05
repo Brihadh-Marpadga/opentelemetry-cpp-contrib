@@ -46,12 +46,12 @@ RUN dnf update -y && \
     dnf clean all
 
 # install python 2.7.8
-RUN wget http://www.python.org/ftp/python/${PYTHON_VERSION}/Python-${PYTHON_VERSION}.tar.xz \
-    && unxz Python-${PYTHON_VERSION}.tar.xz \
-    && tar -xf Python-${PYTHON_VERSION}.tar \
-    && cd Python-${PYTHON_VERSION} && ./configure --prefix=/usr/local && make && make install \
-    && cd .. \
-    && rm -rf Python-${PYTHON_VERSION}.tar.xz && rm -rf Python-${PYTHON_VERSION}.tar
+RUN dnf update -y && \
+    dnf install -y \
+        python3 \
+        python3-devel \
+        python3-pip && \
+    dnf clean all
 
 
 # install git required for grpc
