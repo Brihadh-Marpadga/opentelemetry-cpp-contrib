@@ -81,7 +81,7 @@ RUN git clone https://github.com/grpc/grpc \
 
 # Create dependencies folder to store all dependencies.
 RUN mkdir -p dependencies
-
+RUN dnf install -y wget && dnf clean all
 # install boost version 1.75.0
 #RUN wget https://boostorg.jfrog.io/artifactory/main/release/${BOOST_VERSION}/source/${BOOST_FILENAME}_rc1.tar.gz \
 RUN wget https://archives.boost.io/release/${BOOST_VERSION}/source/${BOOST_FILENAME}.tar.gz \
@@ -93,6 +93,7 @@ RUN wget https://archives.boost.io/release/${BOOST_VERSION}/source/${BOOST_FILEN
     # && cd .. && rm -rf ${BOOST_FILENAME} && rm ${BOOST_FILENAME}_rc1.tar.gz
     && cd .. && rm -rf ${BOOST_FILENAME} && rm ${BOOST_FILENAME}.tar.gz
 
+RUN dnf install -y wget && dnf clean all
 # install automake
 RUN wget --no-check-certificate https://ftp.gnu.org/gnu/automake/automake-${AUTOMAKE_VERSION}.tar.gz \
     && tar xzf automake-${AUTOMAKE_VERSION}.tar.gz \
@@ -123,6 +124,8 @@ RUN mkdir -p dependencies/opentelemetry/${OPENTELEMETRY_VERSION}/lib \
     && cd .. && rm -rf opentelemetry-cpp
 
 # install nginx
+
+RUN dnf install -y wget && dnf clean all
 RUN wget http://nginx.org/download/nginx-${NGINX_VERSION}.tar.gz \
     && tar -xvf nginx-${NGINX_VERSION}.tar.gz -C /build-dependencies \
     && rm -rf nginx-${NGINX_VERSION}.tar.gz
