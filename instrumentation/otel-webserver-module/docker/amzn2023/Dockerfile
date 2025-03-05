@@ -34,17 +34,17 @@ ARG NGINX_VERSION="1.27.3"
 RUN chmod -R 777 /opt
 
 # install required packages
-RUN dnf update -y \
-    && dnf install -y \
-    dnf install wget -y \
-    dnf install -y zlib-devel \
-    dnf install -y openssl-devel \
-    dnf install java-1.8.0-openjdk -y \
-    dnf install java-1.8.0-openjdk-devel \
-    dnf install pcre-devel -y \
-    dnf install xz -y \
-    dnf install httpd -y \
-    && dnf clean all
+dnf update -y     && dnf install -y     
+dnf install wget -y     
+dnf install -y zlib-devel     
+dnf install -y openssl-devel     
+dnf install java-1.8.0-openjdk -y     
+dnf install java-1.8.0-openjdk-devel     
+dnf install pcre-devel -y     
+dnf install xz -y     
+dnf install httpd -y     
+&& dnf clean all
+
 
 # install python 2.7.8
 RUN wget http://www.python.org/ftp/python/${PYTHON_VERSION}/Python-${PYTHON_VERSION}.tar.xz \
