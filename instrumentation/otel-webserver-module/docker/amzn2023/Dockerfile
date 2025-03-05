@@ -59,6 +59,9 @@ RUN dnf install git -y \
   && dnf clean all
 
 RUN dnf install -y wget && dnf clean all
+# Install required dependencies
+RUN dnf install -y wget tar && dnf clean all
+
 # install cmake 3.20
 RUN wget https://cmake.org/files/v${CMAKE_VERSION}/cmake-${CMAKE_0VERSION}-linux-x86_64.tar.gz \
   && tar -xvf cmake-${CMAKE_0VERSION}-linux-x86_64.tar.gz \
