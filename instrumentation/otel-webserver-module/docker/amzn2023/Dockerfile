@@ -133,11 +133,11 @@ RUN mkdir -p dependencies/opentelemetry/${OPENTELEMETRY_VERSION}/lib \
                  -DWITH_OTLP=ON \
                  -DCMAKE_INSTALL_PREFIX=/dependencies/opentelemetry/${OPENTELEMETRY_VERSION} \
     && cmake --build . --target all \
-    && ls -R build/ \
+    && cd .. \
     && find . -name "*.a" -exec cp {} /dependencies/opentelemetry/${OPENTELEMETRY_VERSION}/lib/ \; \
     && find . -name "*.so" -exec cp {} /dependencies/opentelemetry/${OPENTELEMETRY_VERSION}/lib/ \; \
     && find build -type d -name "opentelemetry-proto" -exec cp -r {} /dependencies/opentelemetry/${OPENTELEMETRY_VERSION}/include/opentelemetry/ \; \
-    && cd ../.. && rm -rf opentelemetry-cpp
+    && cd .. && rm -rf opentelemetry-cpp
 
 
 # install nginx
