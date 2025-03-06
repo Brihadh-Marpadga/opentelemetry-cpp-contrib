@@ -75,13 +75,6 @@ RUN wget https://cmake.org/files/v${CMAKE_VERSION}/cmake-${CMAKE_0VERSION}-linux
     && cp -rf * /usr/local/ \
     && cd .. && rm -rf cmake-${CMAKE_0VERSION}-linux-x86_64.tar.gz
 
-# Install an older GCC version (e.g., GCC 9)
-RUN dnf install -y gcc9 gcc9-c++ \
-    && alternatives --install /usr/bin/gcc gcc /usr/bin/gcc9 100 \
-    && alternatives --install /usr/bin/g++ g++ /usr/bin/g++9 100
-
-# Verify GCC version
-RUN gcc --version
 
 # install grpc. If planning to upgrade, make sure sed command works
 RUN git clone https://github.com/grpc/grpc \
