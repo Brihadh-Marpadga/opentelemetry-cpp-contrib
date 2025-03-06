@@ -28,6 +28,7 @@ RUN dnf update -y && dnf install -y \
     java-17-amazon-corretto java-17-amazon-corretto-devel \
     httpd git shadow-utils \
     wget gzip \
+    xz xz-devel \
     openssl-devel zlib-devel bzip2 xz-devel libffi-devel \
     && dnf clean all
 
