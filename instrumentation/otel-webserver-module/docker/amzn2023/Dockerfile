@@ -3,7 +3,7 @@ FROM amazonlinux:2023
 ARG NGINX_VERSION="1.27.3"
 
 # install nginx
-RUN dnf install -y wget tar && dnf clean all
+RUN dnf install -y wget gzip tar && dnf clean all
 RUN mkdir -p /build-dependencies && \
     wget http://nginx.org/download/nginx-${NGINX_VERSION}.tar.gz \
     && tar -xvf nginx-${NGINX_VERSION}.tar.gz -C /build-dependencies \
