@@ -37,14 +37,16 @@ RUN groupadd -r swuser && useradd -u 1000 -g swuser -m -s /sbin/nologin -c "defa
 RUN chmod -R 777 /opt
 
 # install required packages
+RUN dnf update -y && dnf install -y \
+    wget \
+    java-17-amazon-corretto \
+    java-17-amazon-corretto-devel \
+    pcre-devel \
+    httpd \
+    git \
+    shadow-utils \
+    && dnf clean all
 
-
-RUN dnf install wget -y \
-    && dnf install java-1.8.0-openjdk -y \
-    && dnf install java-1.8.0-openjdk-devel -y \
-    && dnf install pcre-devel -y \
-    && dnf install httpd -y \
-    && dnf install git -y
 
 RUN dnf groupinstall "Development Tools" -y \
     && dnf install wget tar bzip2 xz-devel openssl-devel libffi-devel zlib-devel -y
