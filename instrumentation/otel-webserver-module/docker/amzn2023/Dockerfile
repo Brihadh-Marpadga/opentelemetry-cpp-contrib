@@ -10,7 +10,7 @@ ENV JDK_ARCH x64
 ARG PYTHON_VERSION="2.7.8"
 ARG CMAKE_VERSION="3.20"
 ARG CMAKE_0VERSION="3.20.0"
-ARG GRPC_VERSION="1.36.4"
+ARG GRPC_VERSION="1.70.1"
 ARG OPENTELEMETRY_VERSION="1.2.0"
 ARG BOOST_VERSION="1.75.0"
 ARG BOOST_FILENAME="boost_1_75_0"
@@ -84,7 +84,7 @@ RUN dnf install -y \
         zlib-devel \
         unzip \
     && dnf clean all
-    
+
 RUN git clone https://github.com/grpc/grpc \
   && cd grpc \
   && git checkout tags/v${GRPC_VERSION} -b v${GRPC_VERSION} \
@@ -110,16 +110,6 @@ RUN wget https://archives.boost.io/release/${BOOST_VERSION}/source/${BOOST_FILEN
     && ./b2 install define=BOOST_ERROR_CODE_HEADER_ONLY link=static threading=multi cxxflags="-fvisibility=hidden -fPIC" cflags="-fvisibility=hidden -fPIC" \
     # && cd .. && rm -rf ${BOOST_FILENAME} && rm ${BOOST_FILENAME}_rc1.tar.gz
     && cd .. && rm -rf ${BOOST_FILENAME} && rm ${BOOST_FILENAME}.tar.gz
-
-RUN dnf install -y wget && dnf clean all
-# install automake
-RUN wget --no-check-certificate https://ftp.gnu.org/gnu/automake/automake-${AUTOMAKE_VERSION}.tar.gz \
-    && tar xzf automake-${AUTOMAKE_VERSION}.tar.gz \
-    && cd automake-${AUTOMAKE_VERSION} \
-    && ./configure --prefix=/usr --libdir=/usr/lib64 \
-    && make -j && make install \
-    && automake --version \
-    && cd .. && rm -rf automake-${AUTOMAKE_VERSION}.tar.gz
 
 # install opentelemetry
 RUN mkdir -p dependencies/opentelemetry/${OPENTELEMETRY_VERSION}/lib \
