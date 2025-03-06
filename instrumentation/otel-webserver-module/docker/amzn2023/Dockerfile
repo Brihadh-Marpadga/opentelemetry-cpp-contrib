@@ -28,7 +28,6 @@ RUN dnf update -y && dnf install -y \
     java-17-amazon-corretto java-17-amazon-corretto-devel \
     httpd git shadow-utils \
     openssl-devel zlib-devel bzip2 xz-devel libffi-devel \
-    "Development Tools" \
     && dnf clean all
 
 # Install Python 3.9
