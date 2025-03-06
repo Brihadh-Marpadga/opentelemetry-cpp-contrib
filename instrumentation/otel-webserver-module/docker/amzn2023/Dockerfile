@@ -114,29 +114,30 @@ RUN wget https://archives.boost.io/release/${BOOST_VERSION}/source/${BOOST_FILEN
     # && cd .. && rm -rf ${BOOST_FILENAME} && rm ${BOOST_FILENAME}_rc1.tar.gz
     && cd .. && rm -rf ${BOOST_FILENAME} && rm ${BOOST_FILENAME}.tar.gz
 
-# install opentelemetry
+
+RUN dnf install -y protobuf-compiler protobuf-devel
+
+# Install OpenTelemetry
 RUN mkdir -p dependencies/opentelemetry/${OPENTELEMETRY_VERSION}/lib \
     && mkdir -p dependencies/opentelemetry/${OPENTELEMETRY_VERSION}/include \
     && git clone https://github.com/open-telemetry/opentelemetry-cpp \
     && cd opentelemetry-cpp/ \
     && git checkout tags/v${OPENTELEMETRY_VERSION} -b v${OPENTELEMETRY_VERSION} \
-    && git submodule update --init --recursive \
+    && git submodule update --init --recursive --depth 1 \
     && mkdir build \
     && cd build \
     && cmake .. -DCMAKE_POSITION_INDEPENDENT_CODE=ON \
                  -DBUILD_TESTING=OFF \
-                 -DBUILD_SHARED_LIBS=OFF \  
+                 -DBUILD_SHARED_LIBS=OFF \
+                 -DBUILD_STATIC_LIBS=ON \
                  -DWITH_OTLP=ON \
                  -DCMAKE_INSTALL_PREFIX=/dependencies/opentelemetry/${OPENTELEMETRY_VERSION} \
     && cmake --build . --target all \
-    && cd .. \
-    && find . -name "*.a" -type f -exec cp {} /dependencies/opentelemetry/${OPENTELEMETRY_VERSION}/lib/ \; \
-    && find . -name "*.so" -type f -exec cp {} /dependencies/opentelemetry/${OPENTELEMETRY_VERSION}/lib/ \; \
-    && cp -r api/include/ /dependencies/opentelemetry/${OPENTELEMETRY_VERSION}/ \
-    && for dir in exporters/*; do if [ -d "$dir" ]; then cp -rf "$dir/include" /dependencies/opentelemetry/${OPENTELEMETRY_VERSION}/; fi; done \
-    && cp -r sdk/include/ /dependencies/opentelemetry/${OPENTELEMETRY_VERSION}/ \
-    && cp -r build/generated/third_party/opentelemetry-proto/opentelemetry/proto/ /dependencies/opentelemetry/${OPENTELEMETRY_VERSION}/include/opentelemetry/ \
-    && cd .. && rm -rf opentelemetry-cpp
+    && ls -R build/ \
+    && find . -name "*.a" -exec cp {} /dependencies/opentelemetry/${OPENTELEMETRY_VERSION}/lib/ \; \
+    && find . -name "*.so" -exec cp {} /dependencies/opentelemetry/${OPENTELEMETRY_VERSION}/lib/ \; \
+    && find build -type d -name "opentelemetry-proto" -exec cp -r {} /dependencies/opentelemetry/${OPENTELEMETRY_VERSION}/include/opentelemetry/ \; \
+    && cd ../.. && rm -rf opentelemetry-cpp
 
 
 # install nginx
