@@ -27,6 +27,7 @@ RUN dnf update -y && dnf install -y \
     gcc gcc-c++ make cmake automake autoconf libtool \
     java-17-amazon-corretto java-17-amazon-corretto-devel \
     httpd git shadow-utils \
+    wget gzip \
     openssl-devel zlib-devel bzip2 xz-devel libffi-devel \
     && dnf clean all
 
